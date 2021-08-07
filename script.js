@@ -8,6 +8,7 @@ console.log("hueheu");
  let birdBottom = 100;
  let gravity = 2;
  let isGameOver = false;
+ let gap = 440;
  
  function startGame(){
      birdBottom -= gravity;
@@ -38,24 +39,39 @@ console.log("hueheu");
      
      let randomHeight = Math.random()*60;
      pipeBottom=randomHeight; // to make pipe height vary by shifting its position from bottom
+
      const pipe = document.createElement('div');
-     if(!isGameOver)pipe.classList.add('pipe'); // div will get 'pipe' class only when game not over, so queued pipes won't be created after generate pipe is stopped
+     const topPipe = document.createElement('div');
+
+     if(!isGameOver){
+        pipe.classList.add('pipe'); // div will get 'pipe' class only when game not over, so queued pipes won't be created after generate pipe is stopped
+        topPipe.classList.add('top-pipe');
+     }
      gameDisplay.appendChild(pipe);
+     gameDisplay.appendChild(topPipe);
      pipe.style.left = pipeLeft + 'px';
      pipe.style.bottom = pipeBottom + 'px';
+     topPipe.style.left = pipeLeft + 'px';
+     topPipe.style.bottom = pipeBottom + gap + 'px'; // spawning top pipe with 440px avove bottom pipe 
 
      function movePipe(){
          pipeLeft-=2;
          pipe.style.left = pipeLeft + 'px';
+         topPipe.style.left = pipeLeft + 'px'; // moving top pipe at same rate as bottom
 
          if(pipeLeft === -60){  // when pipe hits left edge, deleting time event and removing pipe 
              clearInterval(timerId);
              gameDisplay.removeChild(pipe);  // removing the div 'pipe'
+             gameDisplay.removeChild(topPipe);
          }
                                                  // 300-150+b=pipeBottom is net height of pipe above ground
          if((pipeLeft > 200 && pipeLeft < 280) &&(birdBottom < 300-150+pipeBottom)  || birdBottom === 0){ // first condition is when bird collide side ways, second for top collision, third for hitting ground
             gameOver();
             clearInterval(timerId);
+         }
+         if((pipeLeft > 200 && pipeLeft<280) &&(birdBottom > gap+pipeBottom-(150+45))){           // setting rules for top pipe
+            gameOver();                                      // gap+pipeBottom is height at which pipe is
+            clearInterval(timerId);                          // 150 for ground, 45 for bird height. as collision works for base of div 
          }
      }
      let timerId= setInterval(movePipe,20); // setInterval is moving pipe every 20 ms. And 'timer Id' returned from
