@@ -9,14 +9,15 @@ console.log("hueheu");
  let gravity = 2;
  let isGameOver = false;
  let gap = 440;
+ let score =0;
  
- function startGame(){
+ function startGravity(){
      birdBottom -= gravity;
      bird.style.bottom=birdBottom + 'px';
      bird.style.left=birdLeft + 'px';
  }
 
- let gameTimerId = setInterval(startGame,20 );    // setInterval repeatedly calls the passed function
+ let gameTimerId = setInterval(startGravity,20 );    // setInterval repeatedly calls the passed function
             // 'gameTimerId' var stores "timer ID" passed by setInterval. so we can target this time event
 
  function jump(){
@@ -28,6 +29,10 @@ console.log("hueheu");
  function controll(e){      // function to make bird jump on pressing space
      if(e.keyCode === 32){  // calling jump only when space is pressed, keyCode for space is '32'
          jump();
+     }
+     if(e.keyCode == 32 && e.target == document.body){  // to prevent scrolling due to space 
+         e.preventDefault();                            // so remove effect of 'space' when target is 'body'
+         return !(e.keyCode == 32);                     //  not working yet lol
      }
  }
 
@@ -55,7 +60,7 @@ console.log("hueheu");
      topPipe.style.bottom = pipeBottom + gap + 'px'; // spawning top pipe with 440px avove bottom pipe 
 
      function movePipe(){
-         pipeLeft-=2;
+         if(!isGameOver)pipeLeft-=2;  // prevent untouched pipe's movement if game over 
          pipe.style.left = pipeLeft + 'px';
          topPipe.style.left = pipeLeft + 'px'; // moving top pipe at same rate as bottom
 
@@ -73,6 +78,13 @@ console.log("hueheu");
             gameOver();                                      // gap+pipeBottom is height at which pipe is
             clearInterval(timerId);                          // 150 for ground, 45 for bird height. as collision works for base of div 
          }
+
+
+         // generating score when bird clears whole pipe, while pipe is moving
+         if(pipeLeft==birdLeft-60)score+=10;
+         console.log("score is "+score);
+         document.querySelector('#score').textContent=score;
+         document.querySelector('#finalscore').textContent="Score : "+score;
      }
      let timerId= setInterval(movePipe,20); // setInterval is moving pipe every 20 ms. And 'timer Id' returned from
                                             // setInterval is stored in "timerId" variable for deleting this time event
@@ -87,4 +99,5 @@ console.log("hueheu");
      console.log('game over');
      clearInterval(gameTimerId); // stopping bird from falling on game over
      document.removeEventListener('keyup', controll); // removes key event from 'document'. and removes function associated by it
- }
+     document.querySelector('.gameover-box').style.display="block";
+}

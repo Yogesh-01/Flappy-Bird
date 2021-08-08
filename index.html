@@ -6,11 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flappy Bird</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="font/font.css">
 </head>
 <body>
   <div class="border-left"></div>
 
   <div class="game-box">
+    <div class="score-board">
+      <h7>Score: </h7> <h7 id="score"></h7>
+    </div>
+    <div class="gameover-box">
+      <h1>Game Over!!!</h1>
+      <br>
+      <h5 id="finalscore"></h5>
+    </div>
+    <div class="initial-box"><h5>Press Space to Start</h5></div>
       <div class="border-top"></div> <!-- to hide pipe above sky -->
     <div class="sky">
         <div class="bird"></div>
