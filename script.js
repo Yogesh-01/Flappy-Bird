@@ -2,7 +2,7 @@ console.log("hueheu");
 
  const bird = document.querySelector('.bird');
  const gameDisplay = document.querySelector('.game-box');
- const ground = document.querySelector('.ground');
+ const ground = document.querySelector(".ground-moving");
  
  let birdLeft =220;
  let birdBottom = 100;
@@ -100,4 +100,22 @@ console.log("hueheu");
      clearInterval(gameTimerId); // stopping bird from falling on game over
      document.removeEventListener('keyup', controll); // removes key event from 'document'. and removes function associated by it
      document.querySelector('.gameover-box').style.display="block";
+     document.querySelector('.initial-box').style.display = "block";
+     ground.classList.add('ground')
+     ground.classList.remove('ground-moving')
 }
+
+
+
+
+
+/***** restarting game */
+
+function func(e){      
+    if(e.keyCode === 32 && isGameOver==true){  
+        window.location.reload();
+    }
+
+}
+
+document.addEventListener('keyup',func); 
