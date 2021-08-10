@@ -10,7 +10,34 @@ console.log("hueheu");
  let isGameOver = false;
  let gap = 440;
  let score =0;
+ var eventt;     // variable to see whether to use click or space 
  
+ 
+///***************************  ADDING  CLICK/TOUCH  EVENT FOR  MOBILE  DISPLAY  ************************///
+///                                                                                                      ///
+///         not robust responsiveness, just a media query to make this                                   ///
+///         barely work on mobile, as they don't have space button to press directly                     ///
+///                                                                                                      ///
+    function myFunction(x) {                                                                             ///
+        if (x.matches) { // If media query matches                                                       ///
+        eventt='click';  // using click event on mobile display                                          ///
+        document.querySelector('.initial-box h5').textContent="Click To Start";                          ///
+                                                                                                         ///
+        } else {                                                                                         ///
+            eventt ='keyup';    //using space for desktop by help of keyup event                         ///
+        }                                                                                                ///
+     }                                                                                                   ///
+                                                                                                         ///
+     var x = window.matchMedia("(max-width: 700px)")                                                     ///
+     myFunction(x) // Call listener function at run time                                                 ///
+     x.addListener(myFunction) // Attach listener function on media query state changes                  ///
+///                                                                                                      ///
+///                                                                                                      ///
+///                                                                                                      ///
+///******************************************************************************************************///
+
+
+
  function startGravity(){
      birdBottom -= gravity;
      bird.style.bottom=birdBottom + 'px';
@@ -27,7 +54,7 @@ console.log("hueheu");
  }
  
  function controll(e){      // function to make bird jump on pressing space
-     if(e.keyCode === 32){  // calling jump only when space is pressed, keyCode for space is '32'
+     if(eventt=='keyup' && e.keyCode === 32  || eventt=='click'){  // calling jump only when space is pressed, keyCode for space is '32'
          jump();
      }
      if(e.keyCode == 32 && e.target == document.body){  // to prevent scrolling due to space 
@@ -36,7 +63,7 @@ console.log("hueheu");
      }
  }
 
- document.addEventListener('keyup',controll);  // executes function "controll" on key-up i.e. after pressing key
+ document.addEventListener(eventt,controll);  // executes function "controll" on key-up i.e. after pressing key
 
  function generatePipe(){
      let pipeLeft = 500;
@@ -98,7 +125,7 @@ console.log("hueheu");
      isGameOver=true;
      console.log('game over');
      clearInterval(gameTimerId); // stopping bird from falling on game over
-     document.removeEventListener('keyup', controll); // removes key event from 'document'. and removes function associated by it
+     document.removeEventListener(eventt, controll); // removes key event from 'document'. and removes function associated by it
      document.querySelector('.gameover-box').style.display="block";
      document.querySelector('.initial-box').style.display = "block";
      ground.classList.add('ground')
@@ -112,10 +139,29 @@ console.log("hueheu");
 /***** restarting game */
 
 function func(e){      
-    if(e.keyCode === 32 && isGameOver==true){  
-        window.location.reload();
+    // if(e.keyCode === 32 && isGameOver==true){  
+    //     window.location.reload();
+    // }
+    if(isGameOver){
+        if(eventt=='click') window.location.reload();
+
+        else if(eventt=='keyup' && e.keyCode === 32) window.location.reload();
     }
 
 }
 
-document.addEventListener('keyup',func); 
+document.addEventListener(eventt,func);   // calling func to check if we need to restart game 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
