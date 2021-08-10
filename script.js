@@ -60,9 +60,9 @@ console.log("hueheu");
      topPipe.style.bottom = pipeBottom + gap + 'px'; // spawning top pipe with 440px avove bottom pipe 
 
      function movePipe(){
-         if(!isGameOver)pipeLeft-=3;  // prevent untouched pipe's movement if game over and updating pipe location
+         if(!isGameOver)pipeLeft-=2;  // prevent untouched pipe's movement if game over 
          pipe.style.left = pipeLeft + 'px';
-         topPipe.style.left = pipeLeft + 'px'; // moving top pipe at  rate 3
+         topPipe.style.left = pipeLeft + 'px'; // moving top pipe at same rate as bottom
 
          if(pipeLeft === -60){  // when pipe hits left edge, deleting time event and removing pipe 
              clearInterval(timerId);
