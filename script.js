@@ -11,6 +11,13 @@ console.log("hueheu");
  let gap = 440;
  let score =0;
  var eventt;     // variable to see whether to use click or space 
+
+ var wing = new Audio('sounds/wing.wav');
+ var die = new Audio('sounds/die.wav');
+ var hit = new Audio('sounds/hit.wav');
+ var point = new Audio('sounds/point.wav');
+
+
  
  
 ///***************************  ADDING  CLICK/TOUCH  EVENT FOR  MOBILE  DISPLAY  ************************///
@@ -51,6 +58,7 @@ console.log("hueheu");
      if(birdBottom<580-45) birdBottom += 50; // to prevent bird fron going out of bounds
      bird.style.bottom = birdBottom + 'px';
      console.log(birdBottom);
+     wing.play();
  }
  
  function controll(e){      // function to make bird jump on pressing space
@@ -100,15 +108,20 @@ console.log("hueheu");
          if((pipeLeft > 200 && pipeLeft < 280) &&(birdBottom < 300-150+pipeBottom)  || birdBottom === 0){ // first condition is when bird collide side ways, second for top collision, third for hitting ground
             gameOver();
             clearInterval(timerId);
+            hit.play();
          }
          if((pipeLeft > 200 && pipeLeft<280) &&(birdBottom > gap+pipeBottom-(150+45))){           // setting rules for top pipe
             gameOver();                                      // gap+pipeBottom is height at which pipe is
             clearInterval(timerId);                          // 150 for ground, 45 for bird height. as collision works for base of div 
+            hit.play();
          }
 
 
          // generating score when bird clears whole pipe, while pipe is moving
-         if(pipeLeft==birdLeft-60)score+=10;
+         if(pipeLeft==birdLeft-60){
+             score+=10;
+             point.play();
+        }
          console.log("score is "+score);
          document.querySelector('#score').textContent=score;
          document.querySelector('#finalscore').textContent="Score : "+score;
@@ -126,10 +139,13 @@ console.log("hueheu");
      console.log('game over');
      clearInterval(gameTimerId); // stopping bird from falling on game over
      document.removeEventListener(eventt, controll); // removes key event from 'document'. and removes function associated by it
-     document.querySelector('.gameover-box').style.display="block";
-     document.querySelector('.initial-box').style.display = "block";
      ground.classList.add('ground')
      ground.classList.remove('ground-moving')
+     setTimeout(function(){ 
+         die.play(); 
+         document.querySelector('.gameover-box').style.display="block";
+         document.querySelector('.initial-box').style.display = "block";
+     },600);
 }
 
 
